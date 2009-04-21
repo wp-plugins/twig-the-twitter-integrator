@@ -1,0 +1,12 @@
+.required {
+  background: #fff;
+}
+
+label.error {
+  color: red;
+  padding-left: .5em;
+  vertical-align: top;
+  border: none;
+  font-size: 100%;
+  background: #fff;
+}

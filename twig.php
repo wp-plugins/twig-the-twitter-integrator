@@ -3,10 +3,10 @@
 Plugin Name: Twig
 Plugin URI: http://www.figly.com/?page=wordpress/twig
 Description: Display your Twitter updates mixed with your WordPress posts, chronologically.
-Version: 0.1
+Version: 0.11
 Author: Daniel M. Hendricks
 Author URI: http://www.danhendricks.com
-*/ 
+*/
 /*
 // Copyright (c) 2009 Daniel M. Hendricks
 // http://www.danhendricks.com
@@ -15,12 +15,12 @@ Author URI: http://www.danhendricks.com
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -45,36 +45,36 @@ add_filter('the_post', 'twig_get_tweets');
 
 function twig_init() {
 	global $twig_last_post_time;
-	
+
 	add_action('admin_menu', 'twig_admin_menu');
 
 	$q = new WP_Query('showposts=1&offset='.(get_settings('posts_per_page')-1));
 	$twig_last_post_time = strtotime($q->post->post_date);
 
-	wp_enqueue_script('jquery'); 
+	wp_enqueue_script('jquery');
 	add_action('template_redirect', 'twig_load_public_javascript');
 	add_action('admin_print_scripts', 'twig_load_admin_javascript');
 }
 
 function twig_load_public_javascript() {
-  wp_enqueue_script('twig_common', '/'.PLUGINDIR.'/twig/js/twig.js');
+  wp_enqueue_script('twig_common', '/'.PLUGINDIR.'/'.plugin_basename(dirname(__FILE__)).'/js/twig.js');
 }
 
 function twig_load_admin_javascript() {
-  echo '<link type="text/css" rel="stylesheet" href="' . '/'.PLUGINDIR.'/twig/css/twig-settings.css" />';
-  wp_enqueue_script('jquery_validate', '/'.PLUGINDIR.'/twig/js/jquery.validate.pack.js');
-  wp_enqueue_script('twig_javascript', '/'.PLUGINDIR.'/twig/js/twig-settings.js');
+  echo '<link type="text/css" rel="stylesheet" href="' . '/'.PLUGINDIR.'/'.plugin_basename(dirname(__FILE__)).'/css/twig-settings.css" />';
+  wp_enqueue_script('jquery_validate', '/'.PLUGINDIR.'/'.plugin_basename(dirname(__FILE__)).'/js/jquery.validate.pack.js');
+  wp_enqueue_script('twig_javascript', '/'.PLUGINDIR.'/'.plugin_basename(dirname(__FILE__)).'/js/twig-settings.js');
 }
 
 function twig_admin_menu() {
-	$plugin = plugin_basename(__FILE__); 
+	$plugin = plugin_basename(__FILE__);
 	add_filter("plugin_action_links_$plugin", 'twig_plugin_action_links' );
 }
 
-function twig_plugin_action_links( $links ) { 
-	$settings_link = "<a href='options-general.php?page=twig/twig-settings.php'>" . __('Settings') . "</a>";
-	array_unshift( $links, $settings_link ); 
-	return $links; 
+function twig_plugin_action_links( $links ) {
+	$settings_link = "<a href='options-general.php?page=".plugin_basename(dirname(__FILE__))."/twig-settings.php'>" . __('Settings') . "</a>";
+	array_unshift( $links, $settings_link );
+	return $links;
 }
 
 function twig_install () {
@@ -91,7 +91,7 @@ function twig_install () {
 			source varchar(384) default NULL,
 			in_reply_to_screen_name varchar(50) default NULL,
 			UNIQUE KEY id (id));";
-		
+
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}
@@ -109,7 +109,7 @@ function twig_display_tweets() {
 	$twig_count = 0;
 
 	if(is_array($tweets)) {
-  	$twig_last_post_time = strtotime($tweets->d_posted); 
+  	$twig_last_post_time = strtotime($tweets->d_posted);
 		foreach($tweets as $msg) {
 			$d_created = strtotime($msg->d_posted);
 
@@ -128,7 +128,7 @@ function twig_display_tweets() {
             }
           }
 				}
-				
+
   			if(strtotime($msg->d_posted) < $twig_last_post_time) $twig_count = -1;
   			$twig_count++;
 				$twig_last_date = strtotime($msg->d_posted);
@@ -166,9 +166,9 @@ function twig_get_tweets_from_cache($max_blog_date,$limit=false) {
 
 			$data = $tc->userTimeline(false,20,$since_id);
 			if(is_object($data)) {
-        twig_save_cache($data, $since_id);      
+        twig_save_cache($data, $since_id);
       } else {
-        echo "Twig exception: Twitter request failed.";      
+        echo "Twig exception: Twitter request failed.";
       }
 		}
 
@@ -183,9 +183,9 @@ function twig_save_cache($data, $since_id) {
       try {
 				$wpdb->query("
 					INSERT INTO ".$wpdb->prefix."twig_cache"." VALUES (
-					'".mysql_real_escape_string($tweet->id)."', 
+					'".mysql_real_escape_string($tweet->id)."',
 					'".mysql_real_escape_string($tweet->text)."',
-					'".date('Y-m-d H:i:s', strtotime(mysql_real_escape_string($tweet->created_at)))."', 
+					'".date('Y-m-d H:i:s', strtotime(mysql_real_escape_string($tweet->created_at)))."',
 					NOW(),
 					'".mysql_real_escape_string($tweet->source)."',
 					'".mysql_real_escape_string($tweet->in_reply_to_screen_name)."')"
@@ -195,7 +195,7 @@ function twig_save_cache($data, $since_id) {
       }
 		}
 	} else {
-		$wpdb->query("UPDATE ".$wpdb->prefix."twig_cache"." SET d_added = NOW() WHERE id = '".$since_id."'"); 
+		$wpdb->query("UPDATE ".$wpdb->prefix."twig_cache"." SET d_added = NOW() WHERE id = '".$since_id."'");
 	}
 }
 
@@ -221,7 +221,7 @@ function twig_merge_template($tweet) {
 	$formatted = str_ireplace("{source}", $tweet->source, $formatted);
 	$formatted = str_ireplace("{date}", date(twig_get_settings('twig_config_date_format'), strtotime($tweet->d_posted)), $formatted);
 	$formatted = str_ireplace("{text}", $tweet_text, $formatted);
-	$formatted = str_ireplace("{id}", $tweet->id, $formatted);	
+	$formatted = str_ireplace("{id}", $tweet->id, $formatted);
 	return $formatted;
 }
 
@@ -250,7 +250,7 @@ function twig_add_username_link($txt, $b_enabled=false) {
 		return $txt;
 	}
 }
-	
+
 function twig_format_replies($txt, $username=false) {
 	if($username) {
 		return str_replace("@".$username, '@<a href="https://twitter.com/'.$username.'" rel="nofollow" target="_blank">'.$username.'</a>', $txt);

@@ -22,7 +22,7 @@ Please note that this plugin is in the beta stage. If you encounter bugs or have
 2. Enable Twig in your WordPress plugins page.
 3. Click the Settings link for Twig in the plugins page to configure Twig for the first time. At minimum, you'll need to enter your Twitter username and password (don't forget to click Save Changes!).
 4. Add the following code to "the loop" in your theme's index.php file, near the top of the loop (ie, just under "while (have_posts())"):
-<?php if(is_home()) twig_display_tweets(); ?>
+&lt;?php if(is_home()) twig_display_tweets(); ?&gt;
 
 == Frequently Asked Questions ==
 
@@ -57,5 +57,6 @@ To access the settings page, navigate to the WordPress Plugins page and click Se
 
 * Localization
 * Ability to delete tweets from cache via Admin panel
+* Support for multiple feeds
 
 `<?php code(); // goes in backticks ?>`

@@ -3,7 +3,7 @@
 Plugin Name: Twig
 Plugin URI: http://www.figly.com/?page=wordpress/twig
 Description: Display your Twitter updates mixed with your WordPress posts, chronologically.
-Version: 0.11
+Version: 0.12
 Author: Daniel M. Hendricks
 Author URI: http://www.danhendricks.com
 */

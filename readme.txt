@@ -60,5 +60,6 @@ To access the settings page, navigate to the WordPress Plugins page and click Se
 * Localization
 * Ability to delete tweets from cache via Admin panel
 * Support for multiple feeds
+* Admin page redesign
 
 `<?php code(); // goes in backticks ?>`

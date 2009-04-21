@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: twitter, tweet, integrate, aggregator, cache, hashtag, api 
 Requires at least: 2.7
 Tested up to: 2.7.1
-Stable tag: 0.12
+Stable tag: 0.13
 
 Twig allows you to display your Twitter "tweets" intermingled among your WordPress posts, sorted chronologically.
 

@@ -3,7 +3,7 @@
 Plugin Name: Twig
 Plugin URI: http://www.figly.com/?page=wordpress/twig
 Description: Display your Twitter updates mixed with your WordPress posts, chronologically.
-Version: 0.12
+Version: 0.13
 Author: Daniel M. Hendricks
 Author URI: http://www.danhendricks.com
 */
@@ -26,7 +26,7 @@ Author URI: http://www.danhendricks.com
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define("TWIG_VERSION", "0.1");
+define("TWIG_VERSION", "0.13");
 define("TWIG_CLIENT_NAME", "Twig");
 define("TWIG_URL", "http://www.figly.com/?page=wordpress/twig");
 
@@ -217,12 +217,12 @@ function twig_merge_template($tweet) {
 	$formatted = twig_get_settings('twig_config_template');
 	$tweet_text = twig_strip_dashes($tweet->msg, twig_get_settings('twig_config_trim_dashes') == 1);
 	$tweet_text = twig_add_username_link($tweet_text, twig_get_settings('twig_config_prepend_username') == 1);
+  	$formatted = twig_format_links($formatted);
 	$formatted = str_ireplace("{unique_css_id}", "twig_tweet_".$tweet->id, $formatted);
 	$formatted = str_ireplace("{source}", $tweet->source, $formatted);
 	$formatted = str_ireplace("{date}", date(twig_get_settings('twig_config_date_format'), strtotime($tweet->d_posted)), $formatted);
 	$formatted = str_ireplace("{text}", $tweet_text, $formatted);
 	$formatted = str_ireplace("{id}", $tweet->id, $formatted);
-  $formatted = twig_format_links($formatted);
 	return $formatted;
 }
 

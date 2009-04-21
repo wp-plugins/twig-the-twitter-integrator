@@ -33,6 +33,8 @@ If you're getting an error, I can try to figure out what the issue is.  If it is
 == Screenshots ==
 
 1. Sample screenshot of Twig in action.
+2. Screenshot of the Settings page in Admin.
+3. You decide how the Tweets look on your front page with the use of templates.
 
 == Configuration ==
 

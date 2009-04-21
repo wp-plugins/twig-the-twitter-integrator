@@ -222,6 +222,7 @@ function twig_merge_template($tweet) {
 	$formatted = str_ireplace("{date}", date(twig_get_settings('twig_config_date_format'), strtotime($tweet->d_posted)), $formatted);
 	$formatted = str_ireplace("{text}", $tweet_text, $formatted);
 	$formatted = str_ireplace("{id}", $tweet->id, $formatted);
+  $formatted = twig_format_links($formatted);
 	return $formatted;
 }
 
@@ -259,4 +260,10 @@ function twig_format_replies($txt, $username=false) {
 	}
 }
 
+function twig_format_links($txt) {
+  $txt = eregi_replace('(((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)', '<a href="\\1">\\1</a>', $txt);
+  $txt = eregi_replace('([[:space:]()[{}])(www.[-a-zA-Z0-9@:%_\+.~#?&//=]+)', '\\1<a href="http://\\2">\\2</a>', $txt);
+  $txt = eregi_replace('([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})', '<a href="mailto:\\1">\\1</a>', $txt);
+  return $txt;
+}
 ?>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: twitter, tweet, integrate, aggregator, cache, hashtag, api 
 Requires at least: 2.7
 Tested up to: 2.8
-Stable tag: 0.15
+Stable tag: 0.16
 
 Twig allows you to display your Twitter "tweets" intermingled among your WordPress posts, sorted chronologically.
 
@@ -54,6 +54,13 @@ To access the settings page, navigate to the WordPress Plugins page and click Se
 * <strong><tt>Tweet Template</tt></strong> - The template used to format and display each tweet.
 * <strong><tt>Show/Hide Template</tt></strong> (optional) - The template for the Delete button/link, displayed to those with Administrator privileges to quickly delete a tweet from the cache.
 * <strong><tt>Clear Cache</tt></strong> - Clear the most recent entries in the cache and refresh them from Twitter. This may be useful if you are experience data issues.
+
+== Changelog ==
+
+= 0.16 =
+
+* Commented out CURLOPT_FOLLOWLOCATION in twitter.class.php.
+* Fixed bug in twig-settings.php where form submission path was incorrect.
 
 == Planned Enhancements ==
 

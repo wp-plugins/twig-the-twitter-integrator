@@ -6,7 +6,7 @@
 <? endif; ?>
 <div class="wrap"><h2>Twig Settings</h2>
 
-<form action="options-general.php?page=twig/twig-settings.php" method="post" id="twig_admin_options" onsubmit="return twig_validateFields(this);">
+<form action="options-general.php?page=<?=plugin_basename(dirname(__FILE__))?>/twig-settings.php" method="post" id="twig_admin_options" onsubmit="return twig_validateFields(this);">
     <table class="form-table">
         <tr valign="top">
             <th scope="row">
@@ -89,7 +89,7 @@
             </th>
             <td>
                 <input type="checkbox" name="twig_config_trim_dashes" id="twig_config_trim_dashes" value="1" <?=(twig_get_settings('twig_config_trim_dashes') ? "checked" : "")?> />
-				<span class="setting-description">Example: A tweet that says, "- I\'m taking a nap" would become "I\'m taking a nap".</span>
+				<span class="setting-description">Example: A tweet that says, "- I'm taking a nap" would become "I'm taking a nap".</span>
             </td>
 
         </tr>

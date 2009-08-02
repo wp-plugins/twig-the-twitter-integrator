@@ -1,9 +1,10 @@
 <?php
+session_start();
 /*
 Plugin Name: Twig
 Plugin URI: http://www.danhendricks.com/source-code/wordpress/plugin-twig-twitter-aggregator/
 Description: Display your Twitter updates mixed with your WordPress posts, chronologically.
-Version: 0.16
+Version: 0.17
 Author: Daniel M. Hendricks
 Author URI: http://www.danhendricks.com
 */
@@ -26,15 +27,11 @@ Author URI: http://www.danhendricks.com
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define("TWIG_VERSION", "0.16");
+define("TWIG_VERSION", "0.17");
 define("TWIG_CLIENT_NAME", "Twig");
 define("TWIG_URL", "http://www.danhendricks.com/source-code/wordpress/plugin-twig-twitter-aggregator/");
 
 require_once("twig-data.php");
-
-// GLOBALS
-$twig_last_post_time = strtotime("now");
-$twig_last_date = strtotime("now");
 
 // HOOKS
 register_activation_hook(__FILE__,'twig_install');
@@ -99,8 +96,8 @@ function twig_install () {
 /* MAIN CODE */
 
 function twig_display_tweets() {
-	global $twig_last_post_time;
-	global $twig_last_date;
+	$twig_last_post_time = twig_get_last_post_time();
+
 	$twig_expand_started = false;
 	$tweet_limit = (twig_get_settings('twig_config_tweet_limit') ? twig_get_settings('twig_config_tweet_limit') : false);
 	$start_date = get_the_time('U');
@@ -108,33 +105,38 @@ function twig_display_tweets() {
 	$twig_count = 0;
 
 	if(is_array($tweets)) {
-  	$twig_last_post_time = strtotime($tweets->d_posted);
+
 		foreach($tweets as $msg) {
 			$d_created = strtotime($msg->d_posted);
-
-			if($d_created > $start_date && $d_created < $twig_last_date) {
+			
+			if($d_created > $start_date && $d_created < $twig_last_post_time) {
 				if(!(twig_get_settings('twig_config_hide_replies') == 1 && !empty($msg->in_reply_to_screen_name))) {
-          $twig_filter = trim(twig_get_settings('twig_config_tweet_filter'));
-          if(empty($twig_filter) || (!empty($twig_filter) && stripos($msg->msg, $twig_filter))) {
-            if(empty($tweet_limit) || $twig_count < $tweet_limit) {
-              echo twig_merge_template($msg);
-            } else {
-              if(!$twig_expand_started) {
-                twig_display_expand_collapse($msg);
-              }
-              echo twig_merge_template($msg);
-              $twig_expand_started = true;
-            }
-          }
+					$twig_filter = trim(twig_get_settings('twig_config_tweet_filter'));
+					if(empty($twig_filter) || (!empty($twig_filter) && stripos($msg->msg, $twig_filter))) {
+						if(empty($tweet_limit) || $twig_count < $tweet_limit) {
+              				echo twig_merge_template($msg);
+            			} else {
+              				if(!$twig_expand_started) {
+                				twig_display_expand_collapse($msg);
+              				}
+              				echo twig_merge_template($msg);
+              				$twig_expand_started = true;
+            			}
+          			}
 				}
-
-  			if(strtotime($msg->d_posted) < $twig_last_post_time) $twig_count = -1;
-  			$twig_count++;
-				$twig_last_date = strtotime($msg->d_posted);
+  			
+	  			$twig_count++;
 			}
 		}
 		if($twig_expand_started) echo "</div>";
 	}
+}
+
+function twig_get_last_post_time() {
+	global $wpdb;
+	$result = $wpdb->get_var("SELECT UNIX_TIMESTAMP(post_date) FROM ".$wpdb->prefix."posts WHERE post_status = 'publish' AND ID > ".get_the_ID()." ORDER BY post_date ASC LIMIT 1");
+	if(!isset($result)) $result = strtotime("now");
+	return $result;
 }
 
 function twig_get_settings($value) {

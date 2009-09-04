@@ -4,7 +4,7 @@ session_start();
 Plugin Name: Twig
 Plugin URI: http://www.danhendricks.com/source-code/wordpress/plugin-twig-twitter-aggregator/
 Description: Display your Twitter updates mixed with your WordPress posts, chronologically.
-Version: 0.17
+Version: 0.17.1
 Author: Daniel M. Hendricks
 Author URI: http://www.danhendricks.com
 */
@@ -27,7 +27,7 @@ Author URI: http://www.danhendricks.com
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define("TWIG_VERSION", "0.17");
+define("TWIG_VERSION", "0.17.1");
 define("TWIG_CLIENT_NAME", "Twig");
 define("TWIG_URL", "http://www.danhendricks.com/source-code/wordpress/plugin-twig-twitter-aggregator/");
 
@@ -65,6 +65,7 @@ function twig_load_admin_javascript() {
 function twig_admin_menu() {
 	$plugin = plugin_basename(__FILE__);
 	add_filter("plugin_action_links_$plugin", 'twig_plugin_action_links' );
+	add_menu_page('Twig Settings', TWIG_CLIENT_NAME, 9, plugin_basename(dirname(__FILE__))."/twig-settings.php");
 }
 
 function twig_plugin_action_links( $links ) {

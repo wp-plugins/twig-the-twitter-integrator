@@ -3,8 +3,8 @@ Contributors: hendridm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4753129
 Tags: twitter, tweet, integrate, aggregator, cache, hashtag, api 
 Requires at least: 2.7
-Tested up to: 2.8
-Stable tag: 0.17
+Tested up to: 2.8.4
+Stable tag: 0.17.1
 
 Twig allows you to display your Twitter "tweets" intermingled among your WordPress posts, sorted chronologically.
 
@@ -56,6 +56,10 @@ To access the settings page, navigate to the WordPress Plugins page and click Se
 * <strong><tt>Clear Cache</tt></strong> - Clear the most recent entries in the cache and refresh them from Twitter. This may be useful if you are experience data issues.
 
 == Changelog ==
+
+= 0.17.1 =
+
+* Fixed "You do not have sufficient permissions to access this page." bug when accessing Settings page.
 
 = 0.17 =
 
